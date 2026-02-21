@@ -1,8 +1,10 @@
 package com.fintrack.api.user.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +30,11 @@ public class UserController {
     UserResponse user = userService.create(request);
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.id()).toUri();
     return ResponseEntity.created(uri).body(user);
+  }
+
+  @GetMapping
+  public ResponseEntity<List<UserResponse>> findAll(){
+    List<UserResponse> users = userService.findAll();
+    return ResponseEntity.ok(users);
   }
 }

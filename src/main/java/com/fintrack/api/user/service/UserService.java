@@ -1,5 +1,7 @@
 package com.fintrack.api.user.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.fintrack.api.user.dto.CreateUserRequest;
@@ -27,4 +29,11 @@ public class UserService {
     User saved = userRepository.save(user);
     return UserMapper.toResponse(saved);
   }  
+
+  public List<UserResponse> findAll(){
+    List<User> users = userRepository.findAll();
+    return users.stream()
+      .map(UserMapper::toResponse)
+      .toList();
+  }
 }
