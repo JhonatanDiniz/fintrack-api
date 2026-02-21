@@ -1,6 +1,7 @@
 package com.fintrack.api.user.mapper;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.fintrack.api.user.dto.CreateUserRequest;
 import com.fintrack.api.user.dto.UserResponse;
@@ -21,6 +22,7 @@ public class UserMapper {
 
   public static User toEntity(CreateUserRequest request, String passwordHash){
     return User.builder()
+      .id(UUID.randomUUID())
       .name(request.name())
       .email(request.email())
       .passwordHash(passwordHash)
