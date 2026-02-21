@@ -2,9 +2,11 @@ package com.fintrack.api.user.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,4 +39,11 @@ public class UserController {
     List<UserResponse> users = userService.findAll();
     return ResponseEntity.ok(users);
   }
+
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<UserResponse> findById(@PathVariable UUID id){
+    UserResponse user = userService.findById(id);
+    return ResponseEntity.ok(user);
+  }
+  
 }

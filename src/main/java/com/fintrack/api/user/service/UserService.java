@@ -1,6 +1,7 @@
 package com.fintrack.api.user.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,9 @@ public class UserService {
   }
 
   public UserResponse create(CreateUserRequest request){
-
     if (userRepository.existsByEmail(request.email())){
       throw new IllegalArgumentException("Usuário já cadastrado no sistema, e-mail: " + request.email());
     }
-
     User user = UserMapper.toEntity(request, request.password());
     User saved = userRepository.save(user);
     return UserMapper.toResponse(saved);
@@ -35,5 +34,10 @@ public class UserService {
     return users.stream()
       .map(UserMapper::toResponse)
       .toList();
+  }
+
+  public UserResponse findById(UUID id){
+    return userRepository.findById(id)
+      .map(UserMapper::toResponse).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado para o id: " + id));
   }
 }
