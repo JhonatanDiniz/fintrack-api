@@ -3,6 +3,7 @@ package com.fintrack.api.user.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -40,4 +41,13 @@ public class User {
 
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
+
+  public void updateData(String name, String email){
+    if(name != null){
+      this.name = name;
+    }
+    if(email != null){
+      this.email = email;
+    }
+  }
 }

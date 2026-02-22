@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.fintrack.api.common.exception.EmailAlreadyExistsException;
 import com.fintrack.api.common.exception.ResourceNotFoundException;
 import com.fintrack.api.user.dto.CreateUserRequest;
+import com.fintrack.api.user.dto.UpdateUserRequest;
 import com.fintrack.api.user.dto.UserResponse;
 import com.fintrack.api.user.entity.User;
 import com.fintrack.api.user.mapper.UserMapper;
@@ -41,5 +42,24 @@ public class UserService {
   public UserResponse findById(UUID id){
     return userRepository.findById(id)
       .map(UserMapper::toResponse).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para o id: " + id));
+  }
+
+  public UserResponse update(UUID id, UpdateUserRequest request){
+    User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para o id: " + id));
+
+    if (request.email() != null) {
+      String newEmail = request.email().trim();
+      if (!user.getEmail().equalsIgnoreCase(newEmail)) {
+        if(userRepository.existsByEmail(newEmail)){
+          throw new EmailAlreadyExistsException("Usuário já cadastrado no sistema, e-mail: " + request.email());
+        }        
+      }
+      user.updateData(request.name(), request.email());
+    } else{
+      user.updateData(request.name(), null);
+    } 
+     
+    User saved = userRepository.save(user);
+    return UserMapper.toResponse(saved);
   }
 }
