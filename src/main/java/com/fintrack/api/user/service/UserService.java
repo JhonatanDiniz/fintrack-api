@@ -62,4 +62,9 @@ public class UserService {
     User saved = userRepository.save(user);
     return UserMapper.toResponse(saved);
   }
+
+  public void delete(UUID id){
+    User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado para o id: " + id));
+    userRepository.delete(user);
+  }
 }

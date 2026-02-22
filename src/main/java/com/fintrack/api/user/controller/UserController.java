@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,12 @@ public class UserController {
   public ResponseEntity<UserResponse> update(@PathVariable UUID id, @RequestBody UpdateUserRequest request){
     UserResponse user = userService.update(id, request);
     return ResponseEntity.ok(user);
+  }
+
+  @DeleteMapping(value = "/{id}")
+  public ResponseEntity<Void> delete(@PathVariable UUID id){
+    userService.delete(id);
+    return ResponseEntity.noContent().build();
   }
   
 }
